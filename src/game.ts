@@ -13,7 +13,7 @@ import {
 import { generateStory } from "./services/ollama_ai";
 
 async function main() {
-  const player = await lastPlayer();
+  let player = await lastPlayer();
 
   // start game and greet the player
   if (player) {
@@ -26,7 +26,7 @@ async function main() {
         message: "Enter your name:",
       },
     ]);
-    await createPlayer(name);
+    player = await createPlayer(name);
   }
 
   const playerLanguage = await loadPlayerLanguage(player.id);
