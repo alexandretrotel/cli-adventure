@@ -4,6 +4,7 @@ export const players = sqliteTable("players", {
   id: text().primaryKey().default("gen_random_uuid()"),
   name: text("name").notNull(),
   health: integer("health").default(100).notNull(),
+  language: text("language"),
   created_at: integer("created_at").default(0).notNull(),
 });
 

@@ -1,7 +1,11 @@
 import axios from "axios";
 import "dotenv/config";
 import { OLLAMA_API_URL } from "../data/api";
-import { loadChatHistory, saveChatHistory } from "./database";
+import {
+  loadChatHistory,
+  loadPlayerLanguage,
+  saveChatHistory,
+} from "./database";
 import ora from "ora";
 
 let chatHistory: { role: string; content: string }[] = [];
@@ -11,12 +15,12 @@ export async function generateStory(playerId: string) {
     const spinner = ora().start();
     spinner.text = "Exploring...";
 
+    const playerLanguage = await loadPlayerLanguage(playerId);
     chatHistory = await loadChatHistory(playerId);
 
     const systemPrompt = {
       role: "system",
-      content:
-        "You are a storyteller in an interactive adventure game, guiding the player through the story.",
+      content: `You are a storyteller in an interactive adventure game, guiding the player through the story. The player's language is ${playerLanguage} so you should respond in that language.`,
     };
 
     const messages = [systemPrompt, ...chatHistory];

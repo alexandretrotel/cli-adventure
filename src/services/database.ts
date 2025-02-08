@@ -56,3 +56,15 @@ export async function lastPlayer() {
     .limit(1);
   return player?.[0];
 }
+
+export async function loadPlayerLanguage(playerId: string) {
+  const player = await db
+    .select()
+    .from(players)
+    .where(eq(players.id, playerId));
+  return player?.[0]?.language;
+}
+
+export async function savePlayerLanguage(playerId: string, language: string) {
+  await db.update(players).set({ language }).where(eq(players.id, playerId));
+}

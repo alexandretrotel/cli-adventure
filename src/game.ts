@@ -7,6 +7,8 @@ import {
   loadPlayerItems,
   createPlayer,
   lastPlayer,
+  loadPlayerLanguage,
+  savePlayerLanguage,
 } from "./services/database";
 import { generateStory } from "./services/ollama_ai";
 
@@ -25,6 +27,21 @@ async function main() {
       },
     ]);
     await createPlayer(name);
+  }
+
+  const playerLanguage = await loadPlayerLanguage(player.id);
+
+  if (!playerLanguage) {
+    console.log(chalk.yellow("Select the language for AI responses:"));
+    const { language } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "language",
+        message: "Select the language for AI responses:",
+        choices: ["English", "French", "Spanish", "German"],
+      },
+    ]);
+    await savePlayerLanguage(player.id, language);
   }
 
   const { health } = await loadPlayer(player.id);
