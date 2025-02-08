@@ -63,11 +63,7 @@ Make sure Bun and Ollama are installed and running.
 
 ### Ollama not responding?
 
-Try restarting it: ollama run mistral.
-
-### Lost in the abyss?
-
-Just type help (or scream into the void).
+Try restarting it: ollama run llama3.1.
 
 ## 🎮 Join the Community
 
@@ -76,5 +72,3 @@ Got feedback, ideas, or an insane story from your playthrough? Open an issue or 
 #
 
 ⚔️ Now go forth, adventurer. Your destiny awaits! ⚔️
-
-# cli-adventure
