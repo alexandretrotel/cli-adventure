@@ -15,7 +15,7 @@ curl -fsSL https://bun.sh/install | bash
 2. Clone this epic repository
 
 ```bash
-git clone https://github.com/yourusername/cli-adventure.git
+git clone https://github.com/trotelalexandre/cli-adventure.git
 cd cli-adventure
 ```
 
@@ -28,7 +28,7 @@ bun install
 4. Summon the Game into Existence
 
 ```bash
-bun run game.ts
+bun run src/game.ts
 ```
 
 ## 🎲 How to Play?
@@ -76,4 +76,5 @@ Got feedback, ideas, or an insane story from your playthrough? Open an issue or 
 #
 
 ⚔️ Now go forth, adventurer. Your destiny awaits! ⚔️
+
 # cli-adventure
