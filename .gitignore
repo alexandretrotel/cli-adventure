@@ -1,2 +1,2 @@
 node_modules/
-game.db
+cli-adventure-database.sqlite
