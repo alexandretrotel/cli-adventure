@@ -13,11 +13,13 @@
   "dependencies": {
     "@libsql/client": "^0.14.0",
     "@types/readline-sync": "^1.4.8",
+    "ai": "^4.1.26",
     "axios": "^1.7.9",
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.2",
     "inquirer": "^12.4.1",
+    "ollama-ai-provider": "^1.2.0",
     "ora": "^8.2.0",
     "readline-sync": "^1.4.10"
   }

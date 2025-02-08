@@ -10,7 +10,7 @@ import {
   loadPlayerLanguage,
   savePlayerLanguage,
 } from "./services/database";
-import { generateStory } from "./services/ollama_ai";
+import { generateStory } from "./services/cli-ai";
 
 async function main() {
   let player = await lastPlayer();

@@ -1,14 +1,16 @@
-import axios from "axios";
 import "dotenv/config";
-import { OLLAMA_API_URL } from "../data/api";
 import {
   loadChatHistory,
   loadPlayerLanguage,
   saveChatHistory,
 } from "./database";
 import ora from "ora";
+import { ollama } from "ollama-ai-provider";
+import { streamText } from "ai";
+import { settings } from "../data/settings";
 
 let chatHistory: { role: string; content: string }[] = [];
+const model = ollama(settings.model);
 
 export async function generateStory(playerId: string) {
   try {
@@ -25,42 +27,23 @@ export async function generateStory(playerId: string) {
 
     const messages = [systemPrompt, ...chatHistory];
 
-    const response = await axios.post(
-      OLLAMA_API_URL,
-      {
-        model: "llama3.1",
-        messages: messages,
-        stream: true,
-      },
-      { responseType: "stream" }
-    );
+    const result = streamText({
+      model,
+      prompt: messages?.map((m) => m.content).join("\n"),
+    });
 
     let fullResponse = "";
     let firstChunkReceived = false;
 
-    response.data.on("data", (chunk: Buffer) => {
-      try {
-        if (!firstChunkReceived) {
-          spinner.stop();
-          firstChunkReceived = true;
-        }
-
-        const jsonData = JSON.parse(chunk.toString());
-        if (jsonData?.message?.content) {
-          const newContent = jsonData.message.content;
-          fullResponse += newContent;
-
-          process.stdout.write(newContent);
-        }
-      } catch (error) {
-        console.error("Error processing chunk:", error);
+    for await (const textPart of result.textStream) {
+      if (!firstChunkReceived) {
+        spinner.stop();
+        firstChunkReceived = true;
       }
-    });
 
-    await new Promise<void>((resolve, reject) => {
-      response.data.on("end", () => resolve());
-      response.data.on("error", (err: Error) => reject(err));
-    });
+      fullResponse += textPart;
+      process.stdout.write(textPart);
+    }
 
     chatHistory.push({ role: "assistant", content: fullResponse });
 
