@@ -1,6 +1,6 @@
 import readline from "readline-sync";
-import { savePlayer, loadPlayer } from "./database";
-import { generateStory } from "./ollama_ai";
+import { savePlayer, loadPlayer } from "./services/database";
+import { generateStory } from "./services/ollama_ai";
 
 async function main() {
   let player = loadPlayer();
