@@ -1,61 +1,104 @@
-import readline from "readline-sync";
+import inquirer from "inquirer";
+import ora from "ora";
+import chalk from "chalk";
 import {
   savePlayer,
   loadPlayer,
   loadPlayerItems,
   createPlayer,
+  lastPlayer,
 } from "./services/database";
 import { generateStory } from "./services/ollama_ai";
 
 async function main() {
-  let [player] = await loadPlayer();
+  const player = await lastPlayer();
 
+  // start game and greet the player
   if (player) {
-    console.log(`Welcome back, ${player.name}!`);
+    console.log(chalk.green(`\nWelcome back, ${player.name}!`));
   } else {
-    const name = readline.question("Enter your name: ");
+    const { name } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Enter your name:",
+      },
+    ]);
     await createPlayer(name);
   }
 
-  console.log("\nStarting your adventure...\n");
+  const { health } = await loadPlayer(player.id);
 
-  while (player.health > 0) {
-    const action = readline
-      .question("What do you wanna do? (explore / rest / inventory / quit) > ")
-      .toLowerCase();
+  console.log(chalk.blue("\nStarting your adventure...\n"));
 
-    if (action === "explore") {
-      const story = await generateStory(`${player.name} is exploring...`);
-      console.log("\n" + story + "\n");
-    } else if (action === "rest") {
-      player.health = Math.min(100, player.health + 10);
-      console.log("You rest and regain some health.");
-      console.log("Health:", player.health);
-    } else if (action === "inventory") {
-      const items = await loadPlayerItems(player.id);
-      if (items.length === 0) {
-        console.log("You have no items.");
-        continue;
-      }
+  while (health > 0) {
+    // prompt for the next action
+    const { action } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "action",
+        message: "What would you like to do next?",
+        choices: ["Explore", "Rest", "Inventory", "Quit"],
+      },
+    ]);
 
-      console.log("Inventory:");
-      items.forEach((item) => {
-        console.log(item.name);
-      });
-    } else if (action === "quit") {
-      console.log("Goodbye!");
-      await savePlayer(player.name, player.health);
-      break;
-    } else {
-      console.log("Invalid action.");
+    switch (action.toLowerCase()) {
+      case "explore":
+        await generateStory(player.id);
+        console.log(chalk.green("\nAdventure continues...\n"));
+        break;
+
+      case "rest":
+        if (health === 100) {
+          console.log(chalk.yellow("You are already at full health."));
+        } else {
+          const newHealth = Math.min(100, health + 10);
+          console.log(
+            chalk.cyan(
+              `You rest and regain some health. Current health: ${newHealth}`
+            )
+          );
+        }
+        break;
+
+      case "inventory":
+        const items = await loadPlayerItems(player.id);
+        if (items.length === 0) {
+          console.log(chalk.red("Your inventory is empty."));
+        } else {
+          console.log(chalk.magenta("\nInventory:"));
+          items.forEach((item, index) => {
+            console.log(
+              chalk.yellow(`${index + 1}. ${item.name} - ${item.description}`)
+            );
+          });
+        }
+        break;
+
+      case "quit":
+        console.log(
+          chalk.bgRed("\nGoodbye, brave adventurer! Your journey ends here.")
+        );
+        await savePlayer(player.name, player.health);
+        console.log(chalk.green("Your progress has been saved.\n"));
+        return;
+
+      default:
+        console.log(chalk.red("Invalid action. Please choose a valid option."));
     }
 
+    // save player progress after each action
     try {
       await savePlayer(player.name, player.health);
     } catch (e) {
-      console.error("Failed to save player:", e);
+      console.error(chalk.red("Failed to save player progress:", e));
     }
+
+    // show current health after each action
+    console.log(chalk.blue(`Current Health: ${health}`));
   }
+
+  console.log(chalk.red("\nYour health reached 0! Game Over."));
 }
 
 main();

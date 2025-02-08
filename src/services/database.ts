@@ -1,5 +1,5 @@
 import { db } from "../db/db";
-import { items, players } from "../db/schema";
+import { chatHistory, items, players } from "../db/schema";
 import { desc, eq } from "drizzle-orm";
 
 export async function savePlayer(name: string, health: number) {
@@ -10,10 +10,49 @@ export async function createPlayer(name: string) {
   await db.insert(players).values({ name });
 }
 
-export async function loadPlayer() {
-  return db.select().from(players).orderBy(desc(players.id)).limit(1);
+export async function loadPlayer(id: string) {
+  const player = await db
+    .select()
+    .from(players)
+    .orderBy(desc(players.id))
+    .limit(1);
+  return player?.[0];
 }
 
 export async function loadPlayerItems(playerId: string) {
-  return db.select().from(items).where(eq(items.player_id, playerId));
+  const playerItems = await db
+    .select()
+    .from(items)
+    .where(eq(items.player_id, playerId));
+  return playerItems;
+}
+
+export async function saveChatHistory(
+  playerId: string,
+  role: string,
+  content: string
+) {
+  await db.insert(chatHistory).values({
+    player_id: playerId,
+    role,
+    content,
+    created_at: Date.now(),
+  });
+}
+
+export async function loadChatHistory(playerId: string) {
+  return db
+    .select()
+    .from(chatHistory)
+    .where(eq(chatHistory.player_id, playerId))
+    .orderBy(desc(chatHistory.created_at));
+}
+
+export async function lastPlayer() {
+  const player = await db
+    .select()
+    .from(players)
+    .orderBy(desc(players.created_at))
+    .limit(1);
+  return player?.[0];
 }

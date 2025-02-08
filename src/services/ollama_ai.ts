@@ -1,16 +1,66 @@
 import axios from "axios";
 import "dotenv/config";
+import { OLLAMA_API_URL } from "../data/api";
+import { loadChatHistory, saveChatHistory } from "./database";
+import ora from "ora";
 
-const OLLAMA_API_URL = "http://localhost:11434/api/chat";
+let chatHistory: { role: string; content: string }[] = [];
 
-export async function generateStory(prompt: string): Promise<string> {
+export async function generateStory(playerId: string) {
   try {
-    const response = await axios.post(OLLAMA_API_URL, {
-      model: "llama3.1",
-      messages: [{ role: "user", content: prompt }],
+    const spinner = ora().start();
+    spinner.text = "Exploring...";
+
+    chatHistory = await loadChatHistory(playerId);
+
+    const systemPrompt = {
+      role: "system",
+      content:
+        "You are a storyteller in an interactive adventure game, guiding the player through the story.",
+    };
+
+    const messages = [systemPrompt, ...chatHistory];
+
+    const response = await axios.post(
+      OLLAMA_API_URL,
+      {
+        model: "llama3.1",
+        messages: messages,
+        stream: true,
+      },
+      { responseType: "stream" }
+    );
+
+    let fullResponse = "";
+    let firstChunkReceived = false;
+
+    response.data.on("data", (chunk: Buffer) => {
+      try {
+        if (!firstChunkReceived) {
+          spinner.stop();
+          firstChunkReceived = true;
+        }
+
+        const jsonData = JSON.parse(chunk.toString());
+        if (jsonData?.message?.content) {
+          const newContent = jsonData.message.content;
+          fullResponse += newContent;
+
+          process.stdout.write(newContent);
+        }
+      } catch (error) {
+        console.error("Error processing chunk:", error);
+      }
     });
 
-    return response.data.message.content;
+    await new Promise<void>((resolve, reject) => {
+      response.data.on("end", () => resolve());
+      response.data.on("error", (err: Error) => reject(err));
+    });
+
+    chatHistory.push({ role: "assistant", content: fullResponse });
+
+    await saveChatHistory(playerId, "assistant", fullResponse);
   } catch (e: any) {
     console.error("Failed to generate story:", e?.message);
     return "You find nothing of interest.";
