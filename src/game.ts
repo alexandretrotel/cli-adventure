@@ -17,7 +17,7 @@ async function main() {
 
   while (player.health > 0) {
     const action = readline
-      .question("What do you wanna do? (explore / rest / inventory) > ")
+      .question("What do you wanna do? (explore / rest / inventory / quit) > ")
       .toLowerCase();
 
     if (action === "explore") {
@@ -33,6 +33,10 @@ async function main() {
       items.forEach((item) => {
         console.log(item.name);
       });
+    } else if (action === "quit") {
+      console.log("Goodbye!");
+      await savePlayer(player.name, player.health);
+      break;
     } else {
       console.log("Invalid action.");
     }
