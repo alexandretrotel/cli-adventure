@@ -5,7 +5,7 @@ export const players = sqliteTable("players", {
   name: text("name").notNull(),
   health: integer("health").default(100).notNull(),
   language: text("language"),
-  created_at: integer("created_at").default(0).notNull(),
+  created_at: integer("created_at").default(Date.now()).notNull(),
 });
 
 export const items = sqliteTable("items", {
@@ -17,7 +17,7 @@ export const items = sqliteTable("items", {
       onDelete: "cascade",
     })
     .notNull(),
-  created_at: integer("created_at").default(0).notNull(),
+  created_at: integer("created_at").default(Date.now()).notNull(),
 });
 
 export const chatHistory = sqliteTable("chat_history", {
@@ -29,5 +29,5 @@ export const chatHistory = sqliteTable("chat_history", {
     .notNull(),
   role: text("role").notNull(),
   content: text("content").notNull(),
-  created_at: integer("created_at").default(0).notNull(),
+  created_at: integer("created_at").default(Date.now()).notNull(),
 });
