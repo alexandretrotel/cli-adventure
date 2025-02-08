@@ -1,5 +1,10 @@
 import readline from "readline-sync";
-import { savePlayer, loadPlayer, loadPlayerItems } from "./services/database";
+import {
+  savePlayer,
+  loadPlayer,
+  loadPlayerItems,
+  createPlayer,
+} from "./services/database";
 import { generateStory } from "./services/ollama_ai";
 
 async function main() {
@@ -9,8 +14,7 @@ async function main() {
     console.log(`Welcome back, ${player.name}!`);
   } else {
     const name = readline.question("Enter your name: ");
-    player = { id: "", name, health: 100 };
-    await savePlayer(name, player.health);
+    await createPlayer(name);
   }
 
   console.log("\nStarting your adventure...\n");
@@ -29,6 +33,11 @@ async function main() {
       console.log("Health:", player.health);
     } else if (action === "inventory") {
       const items = await loadPlayerItems(player.id);
+      if (items.length === 0) {
+        console.log("You have no items.");
+        continue;
+      }
+
       console.log("Inventory:");
       items.forEach((item) => {
         console.log(item.name);
