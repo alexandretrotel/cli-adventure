@@ -11,7 +11,7 @@ export async function savePlayer(name: string, health: number) {
   await db.update(players).set({ health }).where(eq(players.name, name));
 }
 
-export async function loadPlayer(id: string) {
+export async function loadPlayer() {
   const player = await db
     .select()
     .from(players)
@@ -31,7 +31,7 @@ export async function loadPlayerItems(playerId: string) {
 export async function saveChatHistory(
   playerId: string,
   role: string,
-  content: string
+  content: string,
 ) {
   await db.insert(chatHistory).values({
     player_id: playerId,

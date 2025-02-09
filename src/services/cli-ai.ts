@@ -48,8 +48,8 @@ export async function generateStory(playerId: string) {
     chatHistory.push({ role: "assistant", content: fullResponse });
 
     await saveChatHistory(playerId, "assistant", fullResponse);
-  } catch (e: any) {
-    console.error("Failed to generate story:", e?.message);
+  } catch (e: unknown) {
+    console.error("Failed to generate story:", e);
     return "You find nothing of interest.";
   }
 }

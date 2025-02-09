@@ -1,5 +1,4 @@
 import inquirer from "inquirer";
-import ora from "ora";
 import chalk from "chalk";
 import {
   savePlayer,
@@ -44,7 +43,7 @@ async function main() {
     await savePlayerLanguage(player.id, language);
   }
 
-  const { health } = await loadPlayer(player.id);
+  const { health } = await loadPlayer();
 
   console.log(chalk.blue("\nStarting your adventure...\n"));
 
@@ -60,48 +59,54 @@ async function main() {
     ]);
 
     switch (action.toLowerCase()) {
-      case "explore":
+      case "explore": {
         await generateStory(player.id);
         console.log(chalk.green("\nAdventure continues...\n"));
         break;
+      }
 
-      case "rest":
+      case "rest": {
         if (health === 100) {
           console.log(chalk.yellow("You are already at full health."));
         } else {
           const newHealth = Math.min(100, health + 10);
           console.log(
             chalk.cyan(
-              `You rest and regain some health. Current health: ${newHealth}`
-            )
+              `You rest and regain some health. Current health: ${newHealth}`,
+            ),
           );
         }
         break;
+      }
 
-      case "inventory":
+      case "inventory": {
         const items = await loadPlayerItems(player.id);
+
         if (items.length === 0) {
           console.log(chalk.red("Your inventory is empty."));
         } else {
           console.log(chalk.magenta("\nInventory:"));
           items.forEach((item, index) => {
             console.log(
-              chalk.yellow(`${index + 1}. ${item.name} - ${item.description}`)
+              chalk.yellow(`${index + 1}. ${item.name} - ${item.description}`),
             );
           });
         }
         break;
+      }
 
-      case "quit":
+      case "quit": {
         console.log(
-          chalk.bgRed("\nGoodbye, brave adventurer! Your journey ends here.")
+          chalk.bgRed("\nGoodbye, brave adventurer! Your journey ends here."),
         );
         await savePlayer(player.name, player.health);
         console.log(chalk.green("Your progress has been saved.\n"));
         return;
+      }
 
-      default:
+      default: {
         console.log(chalk.red("Invalid action. Please choose a valid option."));
+      }
     }
 
     // save player progress after each action
