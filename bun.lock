@@ -4,8 +4,6 @@
     "": {
       "name": "cli-adventure",
       "dependencies": {
-        "@libsql/client": "^0.14.0",
-        "@types/readline-sync": "^1.4.8",
         "ai": "^4.1.26",
         "axios": "^1.7.9",
         "chalk": "^5.4.1",
@@ -18,7 +16,9 @@
       },
       "devDependencies": {
         "@eslint/js": "^9.20.0",
+        "@libsql/client": "^0.14.0",
         "@types/bun": "latest",
+        "@types/readline-sync": "^1.4.8",
         "drizzle-kit": "^0.30.4",
         "eslint": "^9.20.0",
         "globals": "^15.14.0",
