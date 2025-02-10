@@ -4,31 +4,19 @@ Welcome, brave adventurer! You've just stumbled upon CLI Adventure, a text-based
 
 ## 🚀 How to begin your quest
 
-1. Install Bun (if you haven't already)
-
-You'll need Bun to run this adventure. If you don’t have it yet, grab it here:
-
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-2. Clone this epic repository
+1. Clone this epic repository
 
 ```bash
 git clone https://github.com/trotelalexandre/cli-adventure.git
 cd cli-adventure
+chmod +x install.sh
+./install.sh
 ```
 
-3. Install your Adventurer's Toolkit
+2. Summon the Game into Existence
 
 ```bash
-bun install
-```
-
-4. Summon the Game into Existence
-
-```bash
-bun run src/game.ts
+bun run start
 ```
 
 ## 🎲 How to Play?
