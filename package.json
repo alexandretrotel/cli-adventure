@@ -31,13 +31,11 @@
   },
   "dependencies": {
     "ai": "^4.1.27",
-    "axios": "^1.7.9",
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.2",
     "inquirer": "^12.4.1",
     "ollama-ai-provider": "^1.2.0",
-    "ora": "^8.2.0",
-    "readline-sync": "^1.4.10"
+    "ora": "^8.2.0"
   }
 }
