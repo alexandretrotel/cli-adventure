@@ -36,6 +36,13 @@ This game uses Ollama to generate real-time, dynamic storytelling based on your 
 
 With BunSQLite, your journey is saved—so you can continue your adventure anytime. Just don’t rage quit. We believe in you. 😆
 
+## 🎲 Gacha System: Heroes & Items
+
+The gacha system adds an exciting layer of randomness to your adventure. At certain points in the game, you’ll be able to draw heroes and items from a pool, each with varying rarities. Will you get a common hero or an epic sword? It’s all in the roll of the dice!
+
+- Heroes: Draw heroes to join your party. Each hero has unique stats and rarity. The rarer the hero, the stronger their abilities!
+- Items: Discover powerful items, from health potions to legendary weapons, to aid you in your journey. These items can be used to enhance your stats or help you in battle.
+
 ## 🎯 Future Expansions
 
 - Card-based combat system (because who doesn’t love cards?)
