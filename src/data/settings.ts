@@ -1,3 +1,3 @@
 export const settings = {
-  model: "llama3.1",
+  model: "qwen2.5-7b-instruct-1m",
 };

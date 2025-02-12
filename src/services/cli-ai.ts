@@ -5,12 +5,16 @@ import {
   saveChatHistory,
 } from "./database";
 import ora from "ora";
-import { ollama } from "ollama-ai-provider";
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { streamText } from "ai";
 import { settings } from "../data/settings";
 
 let chatHistory: { role: string; content: string }[] = [];
-const model = ollama(settings.model);
+const lmstudio = createOpenAICompatible({
+  name: "lmstudio",
+  baseURL: "http://localhost:1234/v1",
+});
+const model = lmstudio(settings.model);
 
 export async function generateStory(playerId: string) {
   try {
