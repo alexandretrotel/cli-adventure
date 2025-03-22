@@ -15,9 +15,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
-    "@libsql/client": "^0.14.0",
+    "@types/bun": "^1.2.5",
     "@types/readline-sync": "^1.4.8",
-    "drizzle-kit": "^0.30.4",
+    "drizzle-kit": "^0.30.5",
     "eslint": "^9.20.0",
     "globals": "^15.14.0",
     "prettier": "3.5.0",
@@ -33,7 +33,7 @@
     "ai": "^4.1.27",
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.39.2",
+    "drizzle-orm": "^0.41.0",
     "inquirer": "^12.4.1",
     "ora": "^8.2.0"
   }
