@@ -8,8 +8,8 @@ import {
   lastPlayer,
   loadPlayerLanguage,
   savePlayerLanguage,
-} from "./services/database";
-import { generateStory } from "./services/cli-ai";
+} from "./services/database.js";
+import { generateStory } from "./services/cli-ai.js";
 
 async function main() {
   let player = await lastPlayer();

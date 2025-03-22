@@ -1,5 +1,5 @@
-import { db } from "../db/db";
-import { chatHistory, items, players } from "../db/schema";
+import { db } from "../db/db.js";
+import { chatHistory, items, players } from "../db/schema.js";
 import { desc, eq } from "drizzle-orm";
 
 export async function createPlayer(name: string) {

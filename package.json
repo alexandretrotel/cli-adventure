@@ -3,9 +3,8 @@
   "module": "src/game.ts",
   "type": "module",
   "scripts": {
-    "start": "bun run src/game.ts",
-    "build": "bun build src/game.ts",
-    "test": "bun test",
+    "start": "node dist/game.js",
+    "build": "tsc",
     "lint": "eslint",
     "format": "prettier --write .",
     "db:push": "drizzle-kit push",
@@ -17,13 +16,13 @@
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@libsql/client": "^0.14.0",
-    "@types/bun": "latest",
     "@types/readline-sync": "^1.4.8",
     "drizzle-kit": "^0.30.4",
     "eslint": "^9.20.0",
     "globals": "^15.14.0",
     "prettier": "3.5.0",
-    "tsx": "^4.19.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
     "typescript-eslint": "^8.23.0"
   },
   "peerDependencies": {

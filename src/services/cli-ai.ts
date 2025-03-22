@@ -3,11 +3,11 @@ import {
   loadChatHistory,
   loadPlayerLanguage,
   saveChatHistory,
-} from "./database";
+} from "./database.js";
 import ora from "ora";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { streamText } from "ai";
-import { settings } from "../data/settings";
+import { settings } from "../data/settings.js";
 
 let chatHistory: { role: string; content: string }[] = [];
 const lmstudio = createOpenAICompatible({
